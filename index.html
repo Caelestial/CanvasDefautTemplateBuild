@@ -25,6 +25,7 @@
         document.body.style.textAlign = "left";
       }
 
+      // Створюємо інстанс Unity і чекаємо, поки він буде створений
       createUnityInstance(document.querySelector("#unity-canvas"), {
         dataUrl: "Build/dsadasdsadas.data",
         frameworkUrl: "Build/dsadasdsadas.framework.js",
@@ -35,12 +36,15 @@
         productVersion: "1.0",
         // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
         // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
+      }).then((unityInstance) => {
+        // Використовуємо unityInstance після його створення
+        const telegramInitData = window.Telegram.WebApp.initData;
+        const telegramInitDataUnsafe = window.Telegram.WebApp.initDataUnsafe;
+        unityInstance.SendMessage("TelegramUserInformationController", "SetUserInitDataInformation", telegramInitData);
+        unityInstance.SendMessage("TelegramUserInformationController", "SetUserInitDataUnsafeInformation", telegramInitDataUnsafe);
+      }).catch((error) => {
+        console.error("Failed to create Unity instance:", error);
       });
-
-      const telegramInitData = window.Telegram.WebApp.initData;
-      const telegramInitDataUnsafe = window.Telegram.WebApp.initDataUnsafe;
-      unityInstance.SendMessage("TelegramUserInformationController", "SetUserInitDataInformation", telegramInitData);
-      unityInstance.SendMessage("TelegramUserInformationController", "SetUserInitDataUnsafeInformation", telegramInitData);
 
     </script>
   </body>
